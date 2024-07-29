@@ -1,0 +1,41 @@
+---
+- name: Setup Web Server
+  hosts: webservers
+  remote_user: vagrant
+  become: True
+  
+  tasks:
+    
+    # - name: copy network configuration
+    #   ansible.builtin.copy:
+    #     src: ./resolv.conf
+    #     dest: /etc/resolv.conf
+    #     owner: root
+    #     group: root
+    #     mode: '0644'
+    #     backup: yes
+
+    - name: install nginx
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+     
+    - name: start and enable Nginx
+      ansible.builtin.systemd:
+        name: nginx
+        state: started
+        enabled: yes
+    
+    - name: copy nginx configuration
+      ansible.builtin.copy:
+        src: ./nginx-conf/my-nginx.conf
+        dest: /etc/nginx/conf.d/
+        owner: root
+        group: root
+        mode: '0644'
+        backup: yes
+  
+    - name: restart nginx
+      ansible.builtin.systemd:
+        name: nginx
+        state: restarted

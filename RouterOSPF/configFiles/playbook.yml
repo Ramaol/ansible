@@ -1,0 +1,29 @@
+---
+
+- name: install osbf
+  hosts: [gns3routers]
+  gather_facts: flase
+  connection: local
+
+  vars:
+    cli:
+      username: ramol
+      password: ramol
+
+  tasks:
+    - name: enable osbf
+      ios_config:
+        provider: "{{cli}}"
+        authorize: yes
+        parents: router ospf 1
+        lines:
+           - network 0.0.0.0 255.255.255.255 area 0
+
+      register: print_output
+
+    - debug: var=print_output
+
+
+
+
+

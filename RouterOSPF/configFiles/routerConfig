@@ -1,0 +1,141 @@
+enable
+configure terminal
+hostname R1
+alias exec s show run
+alias exec c config terminal
+alias exec i show ip interface brief
+alias exec ipr show ip route
+ip tcp synwait 5
+no service timestamps
+no service time debug
+line console 0
+no login
+no exec-timeout
+logging synch
+privilege level 15
+line aux 0
+no login
+no exec-timeout
+logging synch
+privilege level 15
+line vty 0 4
+login local
+transport input all
+ip domain-name cellstream.com
+crypto key generate rsa
+1024
+interface fastEthernet 0/0
+ip address 192.168.1.101 255.255.255.0
+no shutdown
+username ramol pass ramol
+username ramol priv 15
+end
+write
+
+enable
+configure terminal
+hostname R2
+alias exec s show run
+alias exec c config terminal
+alias exec i show ip interface brief
+alias exec ipr show ip route
+ip tcp synwait 5
+no service timestamps
+no service time debug
+line console 0
+no login
+no exec-timeout
+logging synch
+privilege level 15
+line aux 0
+no login
+no exec-timeout
+logging synch
+privilege level 15
+line vty 0 4
+login local
+transport input all
+ip domain-name cellstream.com
+crypto key generate rsa
+1024
+
+interface fastEthernet 0/0
+ip address 192.168.1.102 255.255.255.0
+no shutdown
+username ramol pass ramol
+username ramol priv 15
+end
+write
+
+
+
+enable
+configure terminal
+hostname R3
+alias exec s show run
+alias exec c config terminal
+alias exec i show ip interface brief
+alias exec ipr show ip route
+ip tcp synwait 5
+no service timestamps
+no service time debug
+line console 0
+no login
+no exec-timeout
+logging synch
+privilege level 15
+line aux 0
+no login
+no exec-timeout
+logging synch
+privilege level 15
+line vty 0 4
+login local
+transport input all
+ip domain-name cellstream.com
+crypto key generate rsa
+1024
+interface fastEthernet 0/0
+ip address 192.168.1.103 255.255.255.0
+no shutdown
+username ramol pass ramol
+username ramol priv 15
+end
+write
+
+
+enable
+configure terminal
+hostname R4
+alias exec s show run
+alias exec c config terminal
+alias exec i show ip interface brief
+alias exec ipr show ip route
+ip tcp synwait 5
+no service timestamps
+no service time debug
+line console 0
+no login
+no exec-timeout
+logging synch
+privilege level 15
+line aux 0
+no login
+no exec-timeout
+logging synch
+privilege level 15
+line vty 0 4
+login local
+transport input all
+ip domain-name cellstream.com
+crypto key generate rsa
+1024
+interface fastEthernet 0/0
+ip address 192.168.1.104 255.255.255.0
+no shutdown
+username ramol pass ramol
+username ramol priv 15
+end
+write
+
+

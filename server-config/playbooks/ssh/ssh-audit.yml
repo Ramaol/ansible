@@ -1,0 +1,53 @@
+---
+- name: Audit SSH Configuration
+  hosts: webservers
+  remote_user: vagrant
+  become: yes
+  gather_facts: no   
+  
+  tasks:
+    
+    - name: Check if /etc/ssh/sshd_config exists
+      ansible.builtin.stat:
+        path: /etc/ssh/sshd_config
+      register: sshd_config
+    
+    - name: Read the SSH configuration file
+      ansible.builtin.command: cat /etc/ssh/sshd_config
+      when: sshd_config.stat.exists
+      register: sshd_config_content
+    
+    - name: Ensure PermitRootLogin is set to no
+      ansible.builtin.debug:
+          msg: "PermitRootLogin is set correctly"
+      when: "'PermitRootLogin no' in sshd_config_content.stdout"
+    
+    - name: Ensure PasswordAuthentication is set to no
+      ansible.builtin.debug:
+        msg: "PasswordAuthentication is set correctly"
+      when: "'PasswordAuthentication no' in sshd_config_content.stdout"
+    
+    - name: Ensure X11Forwarding is set to no
+      ansible.builtin.debug:
+        msg: "X11Forwarding is set correctly"
+      when: "'X11Forwarding no' in sshd_config_content.stdout"
+  
+    - name: Print SSH configuration file if it exists
+      ansible.builtin.debug:
+        msg: "{{ sshd_config_content.stdout }}"
+      when: sshd_config.stat.exists
+  
+    - name: Fail if PermitRootLogin is not set to no
+      ansible.builtin.fail:
+        msg: "PermitRootLogin is not set to 'no'"
+      when: sshd_config.stat.exists and 'PermitRootLogin no' not in sshd_config_content.stdout
+  
+    - name: Fail if PasswordAuthentication is not set to no
+      ansible.builtin.fail:
+        msg: "PasswordAuthentication is not set to 'no'"
+      when: sshd_config.stat.exists and 'PasswordAuthentication no' not in sshd_config_content.stdout
+ 
+    - name: Fail if X11Forwarding is not set to no
+      ansible.builtin.fail:
+        msg: "X11Forwarding is not set to 'no'"
+      when: sshd_config.stat.exists and 'X11Forwarding no' not in sshd_config_content.stdout

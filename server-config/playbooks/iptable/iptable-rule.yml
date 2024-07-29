@@ -1,0 +1,52 @@
+---
+- name: Firewall Rules Management
+  hosts: webservers
+  remote_user: vagrant
+  become: yes
+  
+  
+  tasks:
+    
+    - name: Allow SSH (Port 22) from any IP
+      ansible.builtin.iptables:
+        chain: INPUT
+        protocol: tcp
+        destination_port: 22
+        jump: ACCEPT
+
+    - name: Allow HTTP (Port 80) from any IP
+      ansible.builtin.iptables:
+        chain: INPUT
+        protocol: tcp
+        destination_port: 80
+        jump: ACCEPT
+    
+    - name: Allow HTTP (Port 81) from any IP
+      ansible.builtin.iptables:
+        chain: INPUT
+        protocol: tcp
+        destination_port: 81
+        jump: ACCEPT
+    
+
+    - name: Allow HTTPS (Port 443) from any IP
+      ansible.builtin.iptables:
+        chain: INPUT
+        protocol: tcp
+        destination_port: 443
+        jump: ACCEPT
+    
+    - name: Deny all other inbound traffic
+      ansible.builtin.iptables:
+        chain: INPUT
+        policy: DROP
+      
+    - name: Creates directory /etc/iptables
+      ansible.builtin.file:
+        path: /etc/iptables/
+        state: directory
+    
+    - name: Save iptables rules
+      ansible.builtin.shell: sudo iptables-save > /etc/iptables/rules.v4
+
+    
